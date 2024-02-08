@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -30,3 +31,7 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:sanctu
 Route::post('resend_otp', [VerificationController::class,'resendOtp']);
 
 Route::post('verify_otp',[VerificationController::class,'verifyOtp']);
+
+Route::group(['middleware' => ['auth:sanctum','admin']], function () {
+     Route::resource('students',StudentController::class);
+ });
