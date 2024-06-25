@@ -48,4 +48,7 @@ class User extends Authenticatable
     {
         $this->notify(new VerifyEmail($this->getAttribute('id'),$this->getAttribute('name')));
     }
+    public function sons() {
+        return $this->hasMany(Student::class);
+    }
 }

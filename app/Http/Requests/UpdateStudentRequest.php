@@ -23,8 +23,8 @@ class UpdateStudentRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|max:255',
-            'email' => 'sometimes|required|email|unique:students,email,' . $this->id . '|max:255',
-            'national_id' => 'sometimes|required|digits:14|unique:students,national_id,' . $this->id,
+            'email' => 'sometimes|required|email|unique:students,email,' . $this->route('student') . '|max:255',
+            'national_id' => 'sometimes|required|digits:14|unique:students,national_id,' .$this->route('student'),
             'date_birth' => 'sometimes|required|date',
             'grade_id' => 'sometimes|required|exists:grades,id',
             'classroom_id' => 'sometimes|required|exists:classrooms,id',

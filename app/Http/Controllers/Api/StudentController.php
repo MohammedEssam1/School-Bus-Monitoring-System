@@ -27,8 +27,8 @@ class StudentController extends Controller
      */
     public function store(CreateStudentRequest $request)
     {
-        $post = Student::create($request->all());
-        return $this->respondSuccess(new StudentResource($post));
+        $student = Student::create($request->all());
+        return $this->respondSuccess(new StudentResource($student));
     }
 
     /**
