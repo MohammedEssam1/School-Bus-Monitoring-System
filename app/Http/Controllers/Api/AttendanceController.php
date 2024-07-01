@@ -17,7 +17,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendance = Attendance::all();
+        $attendance = Attendance::where('attendence_date', date('Y-m-d'))->get();
         return $this->respondSuccess(AttendanceResource::collection($attendance));
     }
     /**

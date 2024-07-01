@@ -8,6 +8,7 @@ use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Classroom;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -18,11 +19,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
+        DB::table('bus_coordinates')->insert([
+            'latitude' => 0,
+            'longitude' => 0
+        ]);
         $grades =
             [
-                ['name' => 'Primary Grade'],
-                ['name' => 'Secondary Grade'],
-                ['name' => 'preparatory Grade'],
+                ['name' => 'Primary'],
+                ['name' => 'Secondary'],
+                ['name' => 'preparatory'],
             ];
         $classrooms = [
             ['name' => 'First Class', 'grade_id' => 1],

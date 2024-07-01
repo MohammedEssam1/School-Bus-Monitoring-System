@@ -3,13 +3,16 @@
 namespace App\Jobs;
 
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Bus\Queueable;
 use PhpMqtt\Client\Facades\MQTT;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Notifications\BusEventNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Notification;
 
 class Check_RFID implements ShouldQueue
 {
@@ -30,7 +33,7 @@ class Check_RFID implements ShouldQueue
     {
         $mqtt = MQTT::connection();
         $result = [];
-        $mqtt->subscribe('emqx/esp8266', function (string $topic, string $message) use ($mqtt, &$result) {
+        $mqtt->subscribe('bus/attendance', function (string $topic, string $message) use ($mqtt, &$result) {
             $result['topic'] = $topic;
             $result['message'] = $message;
             $mqtt->interrupt();
@@ -51,16 +54,19 @@ class Check_RFID implements ShouldQueue
                         'attendence_date' => $current_date,
                         'attendence_status' => 'Present'
                     ]);
+                    $parent=$tag->student->user;
+                    Notification::send($parent,new BusEventNotification("Your child ".$tag->student->name." has safely entered the school bus."));
                     echo "Successfully Registered";
                 } else {
                     echo "Already Registered";
                 }
+                $mqtt->publish('bus/attendance',"Invalid", 0,true);
+                $mqtt->loop(true, true);
             } else {
                 echo "Invalid Tag";
             }
         } else {
             echo "No message received from MQTT subscription.";
         }
-
     }
 }
