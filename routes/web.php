@@ -1,5 +1,6 @@
 <?php
 
+use PhpMqtt\Client\Facades\MQTT;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-    return  date('Y-m-d');
+    return view('welcome');
+});
+Route::get('/hello', function () {
+    return "hello ya abo essam";
 });
