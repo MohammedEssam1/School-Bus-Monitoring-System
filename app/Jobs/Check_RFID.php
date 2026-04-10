@@ -4,9 +4,11 @@ namespace App\Jobs;
 
 use App\Models\Tag;
 use App\Models\User;
+use App\Models\Student;
 use App\Models\Attendance;
 use Illuminate\Bus\Queueable;
 use PhpMqtt\Client\Facades\MQTT;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\BusEventNotification;
@@ -39,7 +41,7 @@ class Check_RFID implements ShouldQueue
             $mqtt->interrupt();
         }, 0);
         $mqtt->loop(true, true);
-
+        echo $result['message'];
         if (isset($result['message'])) {
             $tag = Tag::where('tag', trim($result['message']))->first();
             if ($tag) {
@@ -60,6 +62,12 @@ class Check_RFID implements ShouldQueue
                 } else {
                     echo "Already Registered";
                 }
+                if($tag->student->status != "in bus"){
+                    Student::where('id', $tag->student_id)->update(['status' => 'in bus']);
+
+                }else{
+                    Student::where('id', $tag->student_id)->update(['status' => 'out of bus']);
+                }
                 $mqtt->publish('bus/attendance',"Invalid", 0,true);
                 $mqtt->loop(true, true);
             } else {
@@ -68,5 +76,6 @@ class Check_RFID implements ShouldQueue
         } else {
             echo "No message received from MQTT subscription.";
         }
+        echo "essam";
     }
 }
