@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -37,9 +36,9 @@ class Update_Bus_Lat_Long implements ShouldQueue
         $mqtt->loop(true, true);
 
         if (isset($result['message'])) {
-        $location = trim($result['message']); 
-        $lat= explode(',', $location)[0];
-        $long= explode(',', $location)[1];
+        $location = trim($result['message']);
+        $lat= explode(',', $location)[1];
+        $long= explode(',', $location)[2];
         DB::table('bus_coordinates')->where('id', 1)->update(['latitude' => $lat, 'longitude' => $long]);
         echo "Bus Coordinates Updated Successfully";
         } else {
