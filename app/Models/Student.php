@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'email', 'national_id', 'date_birth', 'grade_id', 'classroom_id', 'section_id', 'user_id'];
+    protected $fillable = ['name', 'email', 'national_id', 'date_birth', 'grade_id', 'classroom_id', 'section_id', 'user_id','status'];
     public function grade()
     {
         return $this->belongsTo(Grade::class);
