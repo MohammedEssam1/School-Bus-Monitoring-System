@@ -16,7 +16,7 @@ class NotificationResource extends JsonResource
     {
         return [
             'message'=> $this->data['message'],
-            'notification-time'=>$this->created_at->diffForHumans(now(),1)
+            'notificationTime'=>$this->created_at->diffForHumans(now(),1)
         ];
     }
 }
