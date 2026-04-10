@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('classroom_id')->constrained()->onDelete('cascade');
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->softDeletes();
+            $table->string('status')->default('out of bus');
             $table->timestamps();
         });
     }
